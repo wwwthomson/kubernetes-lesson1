@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Shower Presentation Engine</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=792, user-scalable=no">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+	<!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
+	<link rel="stylesheet" href="shower/themes/ribbon/styles/screen-16x10.css">
+	<style>
+		#cover {
+			background-color: white
+		}
+		#cover code {
+			margin:30px 0 0;
+			text-align:center;
+			font-size:70px;
+		}
+		.inactive{
+			color: #CCC;
+		}
+		pre {
+			font-size: 15px;
+		}
+		pre.big {
+			font-size: 25px;
+		}
+		code {
+			font-size: smaller;
+		}
+		pre code {
+			font-size: inherit;
+		}
+		.slide:after {
+			display: none;
+		}
+		.centered {
+			text-align: center;
+		}
+	</style>
+</head>
+<body class="shower list">
+
+	<header class="caption">
+		<h1>kubernetes</h1>
+		<!--<p>Yours Truly, Famous Inc.</p>-->
+	</header>
+
+	<section class="slide shout" id="cover">
+		<h2>kubernetes</h2>
+		<style>
+			#cover h2 {
+				margin:100px 0 0;
+				/*color:#000;*/
+				text-align:center;
+				font-size:70px;
+                font-family: 'PT Mono',monospace;
+				}
+			#cover p {
+				margin:10px 0 0;
+				text-align:center;
+				color:#FFF;
+				font-style:italic;
+				font-size:20px;
+				}
+				#cover p a {
+					color:#FFF;
+					}
+		</style>
+	</section>
+
+	<section class="slide">
+		<h2>Что тут происходит?</h2>
+		<ol>
+			<ul class="next">Микросервисы</ul>
+			<ul class="next">min(Docker)</ul>
+			<ul class="next">Kubernetes. Что внутри?</ul>
+			<ul class="next">Containerum??!11!!</ul>
+			<ul class="next">Собственный кубик</ul>
+			<ul class="next">Немного практики</ul>
+		</ol>
+	</section>
+
+		<section class="slide">
+				<h2>История одного проекта</h2>
+						<p class="next">Необходимо передать проект пользователю
+							<ul>
+							    <li class="next">Собираете все файлы</li>
+								<li class="next">Пишите скрипты для запуска</il>
+								<li class="next">Тестируете скрипты</li>
+								<li class="next">Много тестируете!!!!1</li>
+								<li class="next">Добавляете инструкцию по установке</li>
+						  </ul>
+					  </p>
+						<p class=next>Пользователь: <b>«...у меня ничего не работает»</b></p>
+		</section>
+
+		<section class="slide">
+				<h2>Подход docker'а</h2>
+				<ul>
+						<li class="next">Пишите код</li>
+						<li class="next">Создаете текстовой файл "Dockerfile"</li>
+						<li class="next">Добавляете 3 строки</li>
+						<li class="next">Выпоняете команду: <code>$ docker build</code></li>
+						<li class="next">Получаете образ, работающий везде одинаково</li>
+				</ul>
+		</section>
+
+		<section class="slide">
+				<h2>Что такое Docker?</h2>
+				<ul>
+						<li class="next">Контейнеры вместо виртуалок</li>
+				</ul>
+		</section>
+
+		<section class="slide">
+					<figure>
+				<img class=cover src="pictures/docker.png">
+			</figure>
+		</section>
+
+    <section class="slide">
+        <h2>Что такое Docker?</h2>
+				<ul>
+						<li>Контейнеры вместо виртуалок</li>
+						<li class="next">Нет затрат ресурсов на виртуализацию</li>
+						<li class="next">Изолированная среда <span class="next back">(нет доступа к соседнему контейнеру)</span></li>
+						<li class="next">Контейнер запускается и удаляется за секунды</li>
+						<li class="next">Не предназначен для хранения данных в контейнере</li>
+						<li class="next">Можно найти готовые образы на <a href="https://hub.docker.com/">hub.docker.com</a></li>
+				</ul>
+    </section>
+
+		<section class="slide">
+				<h2>Как запустить контейнер?</h2>
+				<ol>
+						<li class="next">Заходите на <a href="https://hub.docker.com/">DockerHub</a></li>
+						<li class="next">Выбираете готовый образ</li>
+						<li class="next">Вводите в терминале: <code>docker run -d <название образа></code></li>
+				</ol>
+		</section>
+
+		<section class="slide">
+				<h2>Как собрать собственный образ?</h2>
+				<ol>
+						<li class="next">Регистрируетесь на DockerHub и создаете новый репозиторий</li>
+						<li class="next">Создаете в корне проекта Dockerfile</li>
+						<li class="next">Собираете образ: <code>docker build -t <название образа> .</code></li>
+						<li class="next">Отправляете в DockerHub: <code>docker push <название образа></code></li>
+				</ol>
+		</section>
+
+		<section class="slide">
+			<h2>Dockerfile</h2>
+			<pre>
+				<code>FROM ubuntu:16.04</code>
+				<code>COPY . /project</code>
+				<code>EXPOSE 80</code>
+				<code>CMD python /project/webserver.py</code>
+			</pre>
+		</section>
+
+		<section class="slide">
+				<h2>Минимум команд</h2>
+				<ul class="next">
+						<li><code>$ docker run</code></li>
+						<li><code>$ docker ps</code></li>
+						<li><code>$ docker stop</code></li>
+						<li><code>$ docker rm</code></li>
+						<li><code>$ docker images</code></li>
+						<li><code>$ docker build</code></li>
+						<li><code>$ docker push</code></li>
+						<li><code>$ docker rmi</code></li>
+				</ul>
+		</section>
+
+		<section class="slide">
+				<h2>Минимум команд</h2>
+				<ul>
+						<li><code>$ docker run</code> &nbsp;&nbsp;&nbsp;&nbsp; запустить контейнер</li>
+						<li><code>$ docker ps</code> &nbsp;&nbsp;&nbsp;&nbsp; список запущенных контейнеров</li>
+						<li><code>$ docker stop</code> &nbsp;&nbsp;&nbsp;&nbsp; остановить контейнер</li>
+						<li><code>$ docker rm</code> &nbsp;&nbsp;&nbsp;&nbsp; удалить контейнер</li>
+						<li><code>$ docker images</code> &nbsp;&nbsp;&nbsp;&nbsp; список загруженных образов</li>
+						<li><code>$ docker build</code> &nbsp;&nbsp;&nbsp;&nbsp; собрать образ</li>
+						<li><code>$ docker push</code> &nbsp;&nbsp;&nbsp;&nbsp; запушить на DockerHub</li>
+						<li><code>$ docker rmi</code> &nbsp;&nbsp;&nbsp;&nbsp; удалить образ</li>
+				</ul>
+		</section>
+
+		<section class="slide">
+				<h2>Дополнительные ресурсы по Docker</h2>
+				<ul>
+						<li>Как установить: <a href="https://www.docker.com/community-edition#/download">https://www.docker.com/community-edition#/download</a></li>
+						<li>Документация: <a href="https://docs.docker.com">https://docs.docker.com</a></li>
+						<br>
+						<a href="https://docs.docker.com/get-started/">Рекомендую пройти "Get Started"</a>
+				</ul>
+		</section>
+
+
+
+		<section class="slide">
+			<h2>Микросервисы vs монолит</h2>
+			<div>
+				<img src="pictures/micromacro.jpg">
+			</div>
+		</section>
+
+		<section class="slide">
+			<h2>Классический монолит</h2>
+					<div class="centered">
+				<p align="center">
+				<img width="85%" src="pictures/monolit3.jpg">
+				</p>
+			</div>
+		</section>
+
+		<section class="slide">
+			<h2>Зачем микросервисы?</h2>
+			<p>Все в одном</p>
+			<p>Файл X обращается к файлу Y, Y зависит частично от файла Z, файл Z импортирует несколько функций из файлов А и Б.</p>
+			<p class="next">Приходит младший разработчик, изменяет один файл и ломается всё приложение.</p>
+		</section>
+
+			<section class="slide">
+					<h2>Микросервисы</h2>
+					<ul>
+							<li class="next">У каждого сервиса своя роль</li>
+					</ul>
+			</section>
+
+			<section class="slide">
+					<figure>
+							<img class=cover src="pictures/micro.png">
+					</figure>
+			</section>
+
+			<section class="slide">
+					<h2>Микросервисы</h2>
+					<ul>
+							<li>У каждого сервиса своя роль</li>
+							<li class="next">Взаимодействие происходит по restAPI</li>
+							<li class="next">Один проект можно писать на разных языках</li>
+							<li class="next">Легко встраивать новые сервисы</li>
+							<li class="next">Легко обновлять отдельные части проекта</li>
+							<li class="next">Проще масштабировать</li>
+							<li class="next">...</li>
+					</ul>
+			</section>
+
+			<section class="slide">
+					<h2>Микросервисы</h2>
+					<p>Docker выглядит идеальным для такой инфраструктуры</p>
+					<p class="next">до тех пор, пока...</p>
+			</section>
+
+			<section class="slide">
+						<figure>
+					<img class=cover src="pictures/notmicroservice1.png">
+				</figure>
+			</section>
+
+			<section class="slide">
+						<figure>
+					<img class=cover src="pictures/notmicroservice2.png">
+				</figure>
+			</section>
+
+		<section class="slide">
+					<figure>
+				<img class=cover src="pictures/kubernetes.jpg">
+			</figure>
+		</section>
+
+
+		<section class="slide">
+				<h2>Kubernetes</h2>
+				<ul>
+						<li class="next">Объединяет сервера с Docker'ом в кластер</li>
+						<li class="next">Автоматически распределяет контейнеры между серверами</li>
+						<li class="next">Перезапускает контейнеры, если они упали или сервер недоступен</li>
+						<li class="next">Позволяет маштабировать контейнер одной командой</li>
+						<li class="next">Предоставляет контейнеру собственный IP и DNS, балансировку нагрузки</li>
+						<li class="next">Плавные обновления и откаты</li>
+						<li class="next">Позволяет хранить и изменять конфигурационные файлы приложения</li>
+						<li class="next">...</li>
+				</ul>
+		</section>
+
+		<section class="slide">
+				<h2>Как пользоваться?</h2>
+				<p class="next">
+					Все управление происходит через утилиту <code>kubectl</code>
+				</p>
+				<br>
+				  <code class="next">kubectl run smallcontainer --image=nginx</code><br>
+				  <code class="next">kubectl expose deployment smallcontainer --port=80</code><br>
+					<code class="next">kubectl get deployment</code>
+			<pre class="next">
+				<code>
+    NAME               DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+    smallcontainer     1         1         1            1           1m</code>
+			</pre>
+		</section>
+
+		<section class="slide">
+				<h2>Объекты</h2>
+				<ul class="next double">
+					<li>Nodes</li>
+					<li>Namespace</li>
+					<li>Pod</li>
+					<li>Deployment</li>
+					<li>ReplicaSet</li>
+					<li>Services</li>
+					<li>Ingresses</li>
+					<li>ConfigMap</li>
+					<li>Secrets</li>
+						<li>DaemonSet</li>
+						<li>Jobs</li>
+						<li>CronJobs</li>
+						<li>NetworkPolicies</li>
+						<li>ReplicationControllers</li>
+						<li>...</li>
+				</ul>
+		</section>
+
+		<section class="slide">
+				<h2>Объекты</h2>
+				<ul class="double">
+				  <li>Nodes</li>
+					<li>Namespace</li>
+					<li>Pod</li>
+					<li>Deployment</li>
+					<li class="inactive">ReplicaSet</li>
+					<li class="inactive">Services</li>
+					<li class="inactive">Ingresses</li>
+					<li class="inactive">ConfigMap</li>
+					<li class="inactive">Secrets</li>
+						<li class="inactive">DaemonSet</li>
+						<li class="inactive">Jobs</li>
+						<li class="inactive">CronJobs</li>
+						<li class="inactive">NetworkPolicies</li>
+						<li class="inactive">ReplicationControllers</li>
+						<li class="inactive">...</li>
+				</ul>
+		</section>
+
+		<section class="slide">
+				<h2>Объекты</h2>
+				<ul class="double">
+				  <li>Nodes - просто сервер</li>
+					<li class="inactive">Namespace</li>
+					<li class="inactive">Pod</li>
+					<li class="inactive">Deployment</li>
+					<li class="inactive">ReplicaSet</li>
+					<li class="inactive">Services</li>
+					<li class="inactive">Ingresses</li>
+					<li class="inactive">ConfigMap</li>
+					<li class="inactive">Secrets</li>
+						<li class="inactive">DaemonSet</li>
+						<li class="inactive">Jobs</li>
+						<li class="inactive">CronJobs</li>
+						<li class="inactive">NetworkPolicies</li>
+						<li class="inactive">ReplicationControllers</li>
+						<li class="inactive">...</li>
+				</ul>
+		</section>
+
+		<section class="slide">
+				<h2>Pod</h2>
+				<ul>
+					<li class="next">Один контейнер</li>
+					<li class="next">Группа контейнеров</li>
+					<li class="next">Собственный IP</li>
+					<p class="next">Два контейнера в Pod = 1 IP</p>
+				</ul>
+		</section>
+
+
+		<section class="slide">
+			<h2>Pod</h2>
+			<figure>
+				<img class="centered" class=cover src="pictures/pods.svg">
+			</figure>
+		</section>
+
+    <section class="slide">
+        <h2>Pod</h2>
+        <ul>
+            <li>Один контейнер</li>
+            <li>Группа контейнеров</li>
+            <li>Собственный IP</li>
+            <li class="next">Не перезапускаются сами по себе</li>
+            <li class="next">Неделимая единица</li>
+			<p class="next">Если упал один контейнер -> упал весь pod</p>
+			<p class="next"><b>Это важно знать!</b></p>
+        </ul>
+	</section>
+
+		<section class="slide">
+				<h2>Pod</h2>
+				<ul>
+					<li>Один контейнер</li>
+					<li>Группа контейнеров</li>
+					<li>Собственный IP</li>
+                    <li>Не перезапускаются сами по себе</li>
+                    <li>Неделимая единица</li>
+				</ul>
+				<p><code>kubectl get pods</code><br>
+				<code>kubectl get pod &lt;name&gt;</code><br>
+			  <code>kubectl describe pod &lt;name&gt;</code></p>
+		</section>
+
+    <section class="slide">
+        <h2>Pod</h2>
+        <ul>
+            <li>Один контейнер</li>
+            <li>Группа контейнеров</li>
+            <li>Собственный IP</li>
+            <li>Не перезапускаются сами по себе</li>
+            <li>Неделимая единица</li>
+        </ul>
+        <p><code>kubectl get pods</code>&nbsp;&nbsp;&nbsp;&nbsp; - список pod'ов<br>
+            <code>kubectl get pod &lt;name&gt;</code>&nbsp;&nbsp;&nbsp;&nbsp; - список из одного pod'а<br>
+            <code>kubectl describe pod &lt;name&gt;</code>&nbsp;&nbsp;&nbsp;&nbsp; - подробный вывод по pod'у</p>
+    </section>
+
+
+    <section class="slide">
+		<h2>Deployment <span class="next">(deploy)</span></h2>
+    </section>
+
+		<section class="slide">
+				<h2>Deployment</h2>
+				<ul>
+						<li class="next">Запускает несколько одинаковых Pod'ов</li>
+						<li class="next">Напрямую запускать поды нельзя</li>
+						<p class="next">На самом деле можно <span class="next">(но об этом потом)</span></p>
+				</ul>
+		</section>
+
+		<section class="slide">
+				<h2>Deployment</h2>
+				<ul>
+						<li>Запускает несколько одинаковых Pod'ов</li>
+						<li>Напрямую запускать поды нельзя</li>
+				</ul>
+				<p><code>kubectl run &lt;deploy name&gt; --image=&lt;image&gt; --replicas=1</code><br>
+				<code>kubectl get deploy &lt;deploy name&gt;</code><br>
+				<code>kubectl describe deploy &lt;deploy name&gt;</code></p>
+		</section>
+
+
+
+		<section class="slide">
+			<figure>
+				<p align=center><img width="70%" class="centered" class=cover src="pictures/deployment.svg"></p>
+			</figure>
+		</section>
+
+		<section class="slide">
+				<h2>Deployment</h2>
+				<ul>
+						<li>Запускает несколько одинаковых Pod'ов</li>
+						<li>Напрямую запускать поды нельзя</li>
+						<li class="next">Поднимает упавшие контейнеры</li>
+						<li class="next">Позволяет масштабировать Pods</li>
+				</ul>
+				<p class="next"><code>kubectl scale deploy &lt;deploy name&gt; --replicas=&lt;n&gt;</code></p>
+		</section>
+
+
+				<section class="slide centere">
+					<figure>
+						<img width="90%" class=cover src="pictures/deploy1.svg">
+					</figure>
+				</section>
+
+				<section class="slide centere">
+
+					<figure>
+						<img width="90%" class=cover src="pictures/deploy2.svg">
+					</figure>
+				</section>
+
+		<section class="slide">
+				<h2>Namespace (ns)</h2>
+				<ul>
+					<li class="next">Отдельное окружение внутри кластера</li>
+					<li class="next">Можно создать лимит на memory и cpu</li>
+					<li class="next">Контейнеры запущенные в одном namespace изолированы от других</li>
+					<p class="next">На самом деле нет</p>
+				</ul>
+		</section>
+
+		<section class="slide">
+				<h2>Namespace (ns)</h2>
+				<ul>
+					<li>Отдельное окружение внутри кластера</li>
+					<li>Можно создать лимит на memory и cpu</li>
+					<li>Контейнеры запущенные в одном namespace изолированы от других</li>
+					<br>
+				</ul>
+				<p><code>kubectl create namespace &lt;name&gt;</code><br>
+				<code>kubectl get namespace</code></p>
+		</section>
+
+		<section class="slide">
+				<h2>Namespace (ns)</h2>
+				<p>Чтобы работать в рамках конкретного namespace:</p>
+				<p><code>kubectl run nginx --image="nginx" -n &lt;namespace&gt;</code><br>
+				<code>kubectl get pods -n &lt;namespace&gt;</code></p>
+		</section>
+
+		<section class="slide">
+				<h2>Namespace (ns)</h2>
+				<p>Чтобы работать в рамках конкретного namespace:</p>
+				<p><code>kubectl run nginx --image="nginx" <mark>-n &lt;namespace&gt;</mark></code><br>
+				<code>kubectl get pods <mark>-n &lt;namespace&gt;</mark></code></p>
+		</section>
+
+    <section class="slide">
+        <h2>YAML</h2>
+        <ul>
+			<li class="next">Kubernetes все данные хранит в json (yaml)</li>
+            <li class="next">Получить json или yaml запущенного объекта можно через kubectl</li>
+        </ul>
+        <p class="next"><code>kubectl get deploy &lt;name&gt; -o yaml</code><br>
+            <code>kubectl get deploy &lt;name&gt; -o json</code><br>
+    </section>
+
+    <section class="slide">
+        <h2>YAML</h2>
+        <ul>
+            <li>Kubernetes все данные хранит в json (yaml)</li>
+            <li>Получить json или yaml запущенного объекта можно через kubectl</li>
+        </ul>
+		<p><code>kubectl get deploy &lt;name&gt; <mark>-o yaml</mark></code><br>
+			<code>kubectl get deploy &lt;name&gt; <mark>-o json</mark></code><br>
+    </section>
+
+		<section class="slide">
+				<h2>YAML</h2>
+				<ul>
+                    <li>Kubernetes все данные хранит в json (yaml)</li>
+                    <li>Получить json или yaml запущенного объекта можно через kubectl</li>
+				</ul>
+				<p><code>kubectl get deploy &lt;name&gt; -o yaml</code><br>
+				<code>kubectl get deploy &lt;name&gt; -o json</code><br>
+				<code class="next">kubectl get deploy &lt;name&gt; -o wide</code></p>
+		</section>
+
+		<section class="slide">
+				<h2>YAML</h2>
+				<ul>
+                    <li>Kubernetes все данные хранит в json (yaml)</li>
+                    <li>Получить json или yaml запущенного объекта можно через kubectl</li>
+				</ul>
+            <p><code>kubectl get deploy nginx -o yaml &gt nginx.yaml</code></p>
+		</section>
+
+		<section class="slide">
+				<h2>YAML</h2>
+				<ul>
+                    <li>Kubernetes все данные хранит в json (yaml)</li>
+                    <li>Получить json или yaml запущенного объекта можно через kubectl</li>
+				</ul>
+            <p><code>kubectl get deploy nginx -o yaml <mark>&gt nginx.yaml</mark></code></p>
+		</section>
+
+		<section class="slide">
+				<h2>YAML</h2>
+				<ul>
+                    <li>Kubernetes все данные хранит в json (yaml)</li>
+                    <li>Получить json или yaml запущенного объекта можно через kubectl</li>
+                    <li class="next">Все объекты можно создавать через yaml</li>
+				</ul>
+				<p class="next"><code>kubectl create -f pods.yaml</code><br>
+				<code>kubectl create -f deploy.json</code></p>
+		</section>
+
+    <section class="slide">
+        <h2>YAML</h2>
+        <ul>
+            <li>Kubernetes все данные хранит в json (yaml)</li>
+            <li>Получить json или yaml запущенного объекта можно через kubectl</li>
+            <li>Все объекты можно создавать через yaml</li>
+			<li>В yaml удобно хранить весь проект<span class="next">, и запускать одной командой</span></li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>YAML</h2>
+        <ul>
+            <li>Kubernetes все данные хранит в json (yaml)</li>
+            <li>Получить json или yaml запущенного объекта можно через kubectl</li>
+            <li>Все объекты можно создавать через yaml</li>
+			<li>В <b>yaml</b> удобно хранить весь проект<span>, и запускать одной командой</span></li>
+        </ul>
+    </section>
+
+		<section class="slide">
+				<h2>YAML</h2>
+				<ul>
+                    <li>Kubernetes все данные хранит в json (yaml)</li>
+                    <li>Получить json или yaml запущенного объекта можно через kubectl</li>
+                    <li>Все объекты можно создавать через yaml</li>
+				</ul>
+				<center><h2>Не пытайтесь редактировать JSON !!!1!</h2></center>
+		</section>
+
+		<section class="slide">
+			<h2>YAML структура</h2>
+			<p class="next"><code>kubectl get pod nginx-pod -o yaml</code></p>
+		</section>
+
+		<section class="slide" style="padding-top: 8%">
+			<pre>
+				<code>apiVersion: v1</code>
+				<code>kind: Pod</code>
+				<code>metadata:</code>
+				<code>  labels:</code>
+				<code>    env: production</code>
+				<code>    app: nginx</code>
+				<code>  name: nginx-pod</code>
+				<code>  namespace: default</code>
+				<code>spec:</code>
+				<code>  containers:</code>
+				<code>  - name: nginx-container</code>
+				<code>    image: nginx</code>
+				<code>  - name: ubuntu-container</code>
+				<code>    image: ubuntu:16.04</code>
+				<code>    command:</code>
+				<code>    - sleep</code>
+                <code>    - "1000"</code>
+			</pre>
+		</section>
+
+    <section class="slide" style="padding-top: 8%">
+			<pre>
+				<code><mark>apiVersion: v1</mark></code>
+				<code>kind: Pod</code>
+				<code>metadata:</code>
+				<code>  labels:</code>
+				<code>    env: production</code>
+				<code>    app: nginx</code>
+				<code>  name: nginx-pod</code>
+				<code>  namespace: default</code>
+				<code>spec:</code>
+				<code>  containers:</code>
+				<code>  - name: nginx-container</code>
+				<code>    image: nginx</code>
+				<code>  - name: ubuntu-container</code>
+				<code>    image: ubuntu:16.04</code>
+				<code>    command:</code>
+				<code>    - sleep</code>
+                <code>    - "1000"</code>
+			</pre>
+    </section>
+
+	<section class="slide" style="padding-top: 8%">
+			<pre>
+				<code>apiVersion: v1</code>
+				<code><mark>kind: Pod</mark></code>
+				<code>metadata:</code>
+				<code>  labels:</code>
+				<code>    env: production</code>
+				<code>    app: nginx</code>
+				<code>  name: nginx-pod</code>
+				<code>  namespace: default</code>
+				<code>spec:</code>
+				<code>  containers:</code>
+				<code>  - name: nginx-container</code>
+				<code>    image: nginx</code>
+				<code>  - name: ubuntu-container</code>
+				<code>    image: ubuntu:16.04</code>
+				<code>    command:</code>
+				<code>    - sleep</code>
+                <code>    - "1000"</code>
+			</pre>
+    </section>
+
+	<section class="slide" style="padding-top: 8%">
+			<pre>
+				<code>apiVersion: v1</code>
+				<code>kind: Pod</code>
+				<code><mark>metadata:</mark></code>
+				<code><mark>  labels:</mark></code>
+				<code><mark>    env: production</mark></code>
+				<code><mark>    app: nginx</mark></code>
+				<code><mark>  name: nginx-pod</mark></code>
+				<code><mark>  namespace: default</mark></code>
+				<code>spec:</code>
+				<code>  containers:</code>
+				<code>  - name: nginx-container</code>
+				<code>    image: nginx</code>
+				<code>  - name: ubuntu-container</code>
+				<code>    image: ubuntu:16.04</code>
+				<code>    command:</code>
+				<code>    - sleep</code>
+                <code>    - "1000"</code>
+			</pre>
+    </section>
+
+	<section class="slide" style="padding-top: 8%">
+			<pre>
+				<code>apiVersion: v1</code>
+				<code>kind: Pod</code>
+				<code>metadata:</code>
+				<code>  labels:</code>
+				<code>    env: production</code>
+				<code>    app: nginx</code>
+				<code>  name: nginx-pod</code>
+				<code>  namespace: default</code>
+				<code><mark>spec:</mark></code>
+				<code><mark>  containers:</mark></code>
+				<code><mark>  - name: nginx-container</mark></code>
+				<code><mark>    image: nginx</mark></code>
+				<code><mark>  - name: ubuntu-container</mark></code>
+				<code><mark>    image: ubuntu:16.04</mark></code>
+				<code><mark>    command:</mark></code>
+				<code><mark>    - sleep</mark></code>
+                <code><mark>    - "1000"</mark></code>
+			</pre>
+    </section>
+
+	<section class="slide" style="padding-top: 8%">
+			<pre>
+				<code>apiVersion: v1</code>
+				<code>kind: Pod</code>
+				<code>metadata:</code>
+				<code><mark>  labels:</mark></code>
+				<code><mark>    env: production</mark></code>
+				<code><mark>    app: nginx</mark></code>
+				<code>  name: nginx-pod</code>
+				<code>  namespace: default</code>
+				<code>spec:</code>
+				<code>  containers:</code>
+				<code>  - name: nginx-container</code>
+				<code>    image: nginx</code>
+				<code>  - name: ubuntu-container</code>
+				<code>    image: ubuntu:16.04</code>
+				<code>    command:</code>
+				<code>    - sleep</code>
+                <code>    - "1000"</code>
+			</pre>
+    </section>
+
+	<section class="slide" style="padding-top: 8%">
+			<pre>
+				<code>apiVersion: v1</code>
+				<code>kind: Pod</code>
+				<code>metadata:</code>
+				<code>  labels:</code>
+				<code>    env: production</code>
+				<code>    app: nginx</code>
+				<code><mark>  name: nginx-pod</mark></code>
+				<code>  namespace: default</code>
+				<code>spec:</code>
+				<code>  containers:</code>
+				<code>  - name: nginx-container</code>
+				<code>    image: nginx</code>
+				<code>  - name: ubuntu-container</code>
+				<code>    image: ubuntu:16.04</code>
+				<code>    command:</code>
+				<code>    - sleep</code>
+                <code>    - "1000"</code>
+			</pre>
+    </section>
+
+    <section class="slide" style="padding-top: 8%">
+			<pre>
+				<code>apiVersion: v1</code>
+				<code>kind: Pod</code>
+				<code>metadata:</code>
+				<code>  labels:</code>
+				<code>    env: production</code>
+				<code>    app: nginx</code>
+				<code>  name: nginx-pod</code>
+				<code><mark>  namespace: default</mark></code>
+				<code>spec:</code>
+				<code>  containers:</code>
+				<code>  - name: nginx-container</code>
+				<code>    image: nginx</code>
+				<code>  - name: ubuntu-container</code>
+				<code>    image: ubuntu:16.04</code>
+				<code>    command:</code>
+				<code>    - sleep</code>
+                <code>    - "1000"</code>
+			</pre>
+    </section>
+
+    <section class="slide" style="padding-top: 8%">
+			<pre>
+				<code>apiVersion: v1</code>
+				<code>kind: Pod</code>
+				<code>metadata:</code>
+				<code>  labels:</code>
+				<code>    env: production</code>
+				<code>    app: nginx</code>
+				<code>  name: nginx-pod</code>
+				<code>  namespace: default</code>
+				<code>spec:</code>
+				<code>  containers:</code>
+				<code><mark>  - name: nginx-container</mark></code>
+				<code><mark>    image: nginx</mark></code>
+				<code>  - name: ubuntu-container</code>
+				<code>    image: ubuntu:16.04</code>
+				<code>    command:</code>
+				<code>    - sleep</code>
+                <code>    - "1000"</code>
+			</pre>
+    </section>
+
+    <section class="slide" style="padding-top: 8%">
+			<pre>
+				<code>apiVersion: v1</code>
+				<code>kind: Pod</code>
+				<code>metadata:</code>
+				<code>  labels:</code>
+				<code>    env: production</code>
+				<code>    app: nginx</code>
+				<code>  name: nginx-pod</code>
+				<code>  namespace: default</code>
+				<code>spec:</code>
+				<code>  containers:</code>
+				<code>  - name: nginx-container</code>
+				<code>    image: nginx</code>
+				<code><mark>  - name: ubuntu-container</mark></code>
+				<code><mark>    image: ubuntu:16.04</mark></code>
+				<code><mark>    command:</mark></code>
+				<code><mark>    - sleep</mark></code>
+				<code><mark>    - "1000"</mark></code>
+			</pre>
+    </section>
+
+    <section class="slide" style="padding-top: 8%">
+			<pre>
+				<code>apiVersion: v1</code>
+				<code>kind: Pod</code>
+				<code>metadata:</code>
+				<code>  labels:</code>
+				<code>    env: production</code>
+				<code>    app: nginx</code>
+				<code>  name: nginx-pod</code>
+				<code>  namespace: default</code>
+				<code>spec:</code>
+				<code>  containers:</code>
+				<code>  - name: nginx-container</code>
+				<code>    image: nginx</code>
+				<code>  - name: ubuntu-container</code>
+				<code>    image: ubuntu:16.04</code>
+				<code>    command:</code>
+				<code>    - sleep</code>
+				<code>    - "1000"</code>
+			</pre>
+    </section>
+    </section>
+
+    <section class="slide" style="padding-top: 5%">
+        <pre>
+				<code>apiVersion: extensions/v1beta1</code>
+				<code>kind: Deployment</code>
+				<code>metadata:</code>
+				<code>  labels:</code>
+				<code>    app: nginx</code>
+				<code>  name: deploy-name</code>
+				<code>  namespace: default</code>
+				<code>spec:</code>
+				<code>  replicas: 2</code>
+				<code>  template:</code>
+				<code>    metadata:</code>
+				<code>      labels:</code>
+				<code>        app: nginx</code>
+				<code>      name: blabla</code>
+				<code>    spec:</code>
+				<code>      containers:</code>
+				<code>      - name: blabla</code>
+				<code>        image: nginx</code>
+		</pre>
+    </section>
+
+    <section class="slide" style="padding-top: 5%">
+        <pre>
+			<code><mark>apiVersion: extensions/v1beta1</mark></code>
+				<code>kind: Deployment</code>
+				<code>metadata:</code>
+				<code>  labels:</code>
+				<code>    app: nginx</code>
+				<code>  name: deploy-name</code>
+				<code>  namespace: default</code>
+				<code>spec:</code>
+				<code>  replicas: 2</code>
+				<code>  template:</code>
+				<code>    metadata:</code>
+				<code>      labels:</code>
+				<code>        app: nginx</code>
+				<code>      name: blabla</code>
+				<code>    spec:</code>
+				<code>      containers:</code>
+				<code>      - name: blabla</code>
+				<code>        image: nginx</code>
+		</pre>
+    </section>
+
+    <section class="slide" style="padding-top: 5%">
+        <pre>
+				<code>apiVersion: extensions/v1beta1</code>
+			<code><mark>kind: Deployment</mark></code>
+				<code>metadata:</code>
+				<code>  labels:</code>
+				<code>    app: nginx</code>
+				<code>  name: deploy-name</code>
+				<code>  namespace: default</code>
+				<code>spec:</code>
+				<code>  replicas: 2</code>
+				<code>  template:</code>
+				<code>    metadata:</code>
+				<code>      labels:</code>
+				<code>        app: nginx</code>
+				<code>      name: blabla</code>
+				<code>    spec:</code>
+				<code>      containers:</code>
+				<code>      - name: blabla</code>
+				<code>        image: nginx</code>
+		</pre>
+    </section>
+
+    <section class="slide" style="padding-top: 5%">
+        <pre>
+				<code>apiVersion: extensions/v1beta1</code>
+				<code>kind: Deployment</code>
+			<code><mark>metadata:</mark></code>
+			<code><mark>  labels:</mark></code>
+			<code><mark>    app: nginx</mark></code>
+			<code><mark>  name: deploy-name</mark></code>
+			<code><mark>  namespace: default</mark></code>
+				<code>spec:</code>
+				<code>  replicas: 2</code>
+				<code>  template:</code>
+				<code>    metadata:</code>
+				<code>      labels:</code>
+				<code>        app: nginx</code>
+				<code>      name: blabla</code>
+				<code>    spec:</code>
+				<code>      containers:</code>
+				<code>      - name: blabla</code>
+				<code>        image: nginx</code>
+		</pre>
+    </section>
+
+    <section class="slide" style="padding-top: 5%">
+        <pre>
+				<code>apiVersion: extensions/v1beta1</code>
+				<code>kind: Deployment</code>
+				<code>metadata:</code>
+				<code>  labels:</code>
+				<code>    app: nginx</code>
+				<code>  name: deploy-name</code>
+				<code>  namespace: default</code>
+			<code><mark>spec:</mark></code>
+			<code><mark>  replicas: 2</mark></code>
+			<code><mark>  template:</mark></code>
+			<code><mark>    metadata:</mark></code>
+			<code><mark>      labels:</mark></code>
+			<code><mark>        app: nginx</mark></code>
+			<code><mark>      name: blabla</mark></code>
+			<code><mark>    spec:</mark></code>
+			<code><mark>      containers:</mark></code>
+			<code><mark>      - name: blabla</mark></code>
+			<code><mark>        image: nginx</mark></code>
+		</pre>
+    </section>
+
+    <section class="slide" style="padding-top: 5%">
+        <pre>
+			<code>apiVersion: extensions/v1beta1</code>
+			<code>kind: Deployment</code>
+			<code>metadata:</code>
+			<code>  labels:</code>
+			<code>    app: nginx</code>
+			<code>  name: deploy-name</code>
+			<code>  namespace: default</code>
+			<code>spec:</code>
+			<code><mark>  replicas: 2</mark></code>
+			<code>  template:</code>
+			<code>    metadata:</code>
+			<code>      labels:</code>
+			<code>        app: nginx</code>
+			<code>      name: blabla</code>
+			<code>    spec:</code>
+			<code>      containers:</code>
+			<code>      - name: blabla</code>
+			<code>        image: nginx</code>
+		</pre>
+    </section>
+
+
+    <section class="slide" style="padding-top: 5%">
+        <pre>
+			<code>apiVersion: extensions/v1beta1</code>
+			<code>kind: Deployment</code>
+			<code>metadata:</code>
+			<code>  labels:</code>
+			<code>    app: nginx</code>
+			<code>  name: deploy-name</code>
+			<code>  namespace: default</code>
+			<code>spec:</code>
+			<code>  replicas: 2</code>
+			<code>  template:</code>
+			<code><mark>    metadata:</mark></code>
+			<code><mark>      labels:</mark></code>
+			<code><mark>        app: nginx</mark></code>
+			<code><mark>      name: blabla</mark></code>
+			<code><mark>    spec:</mark></code>
+			<code><mark>      containers:</mark></code>
+			<code><mark>      - name: blabla</mark></code>
+			<code><mark>        image: nginx</mark></code>
+		</pre>
+    </section>
+
+    <section class="slide">
+			<h2>Немного по командам kubectl</h2>
+			<Ul class="next">
+				<li>У всех объектов есть alias</li>
+			</ul>
+			<p class="next">
+				pods, pod, po<br>
+				deployments, deployment, deploy<br>
+				namespaces, namespace, ns
+			</p>
+		</section>
+
+    <section class="slide">
+        <h2>Немного по командам kubectl</h2>
+        <p class="next">
+            <code>kubectl get pods</code><br>
+            <code>kubectl get pods podname</code><br>
+            <code>kubectl get pods podname -o yaml</code>
+        </p>
+    </section>
+
+		<section class="slide">
+			<h2>Немного по командам kubectl</h2>
+			<p>
+				<code>kubectl get pods</code><br>
+				<code>kubectl get pod podname</code><br>
+				<code>kubectl get po podname -o yaml</code>
+			</p>
+		</section>
+
+		<section class="slide">
+			<h2>Немного по командам kubectl</h2>
+			<p>
+				<code>kubectl get <mark>pods</mark></code><br>
+				<code>kubectl get <mark>pod</mark> podname</code><br>
+				<code>kubectl get <mark>po</mark> podname -o yaml</code>
+			</p>
+		</section>
+
+		<section class="slide">
+			<h2>Немного по командам kubectl</h2>
+			<p>
+				<code>kubectl get deploy</code><br>
+				<code>kubectl get deploy deployname</code><br>
+				<code>kubectl get deploy deployname -o yaml</code>
+			</p>
+		</section>
+
+		<section class="slide">
+			<h2>Немного по командам kubectl</h2>
+			<p>
+				<code>kubectl get node</code><br>
+				<code>kubectl get node nodename</code><br>
+				<code>kubectl get node nodename -o yaml</code>
+			</p>
+		</section>
+
+		<section class="slide">
+			<h2>Немного по командам kubectl</h2>
+			<p>
+				<code>kubectl get pod podname</code><br>
+				<code>kubectl describe pod podname</code><br>
+				<code>kubectl delete pod podname</code><br>
+				<code>kubectl create -f anypod.yaml</code><br>
+				<code>kubectl replace -f anypod.yaml</code><br>
+				<code>kubectl delete -f anypod.yaml</code>
+			</p>
+		</section>
+
+		<section class="slide">
+			<h2>Немного по командам kubectl</h2>
+			<p>
+				<code>kubectl get deploy deployname</code><br>
+				<code>kubectl describe deploy deployname</code><br>
+				<code>kubectl delete deploy deployname</code><br>
+				<code>kubectl create -f anydeploy.yaml</code><br>
+				<code>kubectl replace -f anydeploy.yaml</code><br>
+				<code>kubectl delete -f anydeploy.yaml</code>
+			</p>
+		</section>
+
+	<section class="slide">
+		<h2></h2>
+	</section>
+
+    <section class="slide">
+        <h2>ДЗ</h2>
+		<ul>
+			<li>Зайти на тестовый сервер и создать namespace в формате "akirillov"</li>
+			<li>Перейти в директорию lesson1 (проект на python3 flask)</li>
+			<li>Создать Dockerfile и залить образ на dockerhub</li>
+			<li>Запустить этот образ через kubectl в своем namespace</li>
+			<li>Убедиться, что pod работает</li>
+		</ul>
+		<p>Запуск приложения в: <code>FLASK_APP=hello.py flask run</code><br>
+		*не забудьте установить зависимости из requirements.txt</p>
+    </section>
+
+	<footer class="badge">
+		<p></p>
+	</footer>
+
+	<div class="progress"></div>
+
+	<script src="shower/shower.min.js"></script>
+	<!-- Copyright © 2017 Yours Truly, Famous Inc. -->
+
+</body>
+</html>
