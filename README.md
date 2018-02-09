@@ -8,7 +8,7 @@
 - Запустить этот образ через kubectl в своем namespace  
 - Убедиться, что pod работает  
 
-Запуск приложения в: FLASK_APP=hello.py flask run  
+Запуск приложения в: FLASK_APP=hello.py flask run -h 0.0.0.0 -p 5000  
 *не забудьте установить зависимости из requirements.txt  
 
 Аккаунты всем выслал
